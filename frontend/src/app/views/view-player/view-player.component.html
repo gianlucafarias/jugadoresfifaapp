@@ -1,0 +1,153 @@
+<section class="container mx-auto p-8 space-y-8">
+
+  <div class="text-center mb-8">
+    <h4 class="text-3xl font-bold text-gray-800">Detalles del Jugador</h4>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center">
+      <img
+        class="h-40 w-40 rounded-full object-cover mb-4"
+        [src]="sanitizeImageUrl(player.player_face_url)"
+        alt="foto del jugador"
+      />
+      <h2 class="text-2xl font-semibold text-gray-800">{{ player.long_name }}</h2>
+      <div class="text-gray-600 mt-4 space-y-1">
+        <p><strong>Equipo:</strong> {{ player.club_name }}</p>
+        <p><strong>Nacionalidad:</strong> {{ player.nationality_name }}</p>
+        <p><strong>Edad:</strong> {{ player.age }}</p>
+        <p><strong>Posición:</strong> {{ player.player_positions }}</p>
+      </div>
+    </div>
+
+    <div class="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">Estadísticas</h3>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-gray-600">
+        <div><strong>Overall:</strong> {{ player.overall }}</div>
+        <div><strong>Potential:</strong> {{ player.potential }}</div>
+        <div><strong>Value:</strong> {{ player.value_eur | currency:'EUR' }}</div>
+        <div><strong>Wage:</strong> {{ player.wage_eur | currency:'EUR' }}</div>
+        <div><strong>Height:</strong> {{ player.height_cm }} cm</div>
+        <div><strong>Weight:</strong> {{ player.weight_kg }} kg</div>
+        <div><strong>Preferred Foot:</strong> {{ player.preferred_foot }}</div>
+        <div><strong>Weak Foot:</strong> {{ player.weak_foot }}</div>
+        <div><strong>Skill Moves:</strong> {{ player.skill_moves }}</div>
+        <div><strong>International Reputation:</strong> {{ player.international_reputation }}</div>
+        <div><strong>Work Rate:</strong> {{ player.work_rate }}</div>
+        <div><strong>Body Type:</strong> {{ player.body_type }}</div>
+        <div><strong>Pace:</strong> {{ player.pace }}</div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Ataque</h3>
+        <div class="space-y-4">
+          <p class="text-sm text-gray-600">Crossing</p>
+          <div class="bg-gray-300 rounded-full w-full h-2 mb-2">
+            <div
+              class="h-full rounded-full bg-green-500"
+              [style.width.%]="player.attacking_crossing">
+            </div>
+          </div>
+          <span class="text-xs text-gray-500">{{ player.attacking_crossing }}%</span>
+          <p class="text-sm text-gray-600">Finishing</p>
+          <div class="bg-gray-300 rounded-full w-full h-2 mb-2">
+            <div
+              class="h-full rounded-full bg-green-500"
+              [style.width.%]="player.attacking_finishing">
+            </div>
+          </div>
+          <span class="text-xs text-gray-500">{{ player.attacking_finishing }}%</span>
+        </div>
+        </div>
+
+      <div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Habilidades</h3>
+        <div class="space-y-4">
+          <div>
+            <p class="text-sm text-gray-600">Long Passing</p>
+            <div class="bg-gray-300 rounded-full w-full h-2 mb-2">
+              <div
+                class="h-full rounded-full bg-green-500"
+                [style.width.%]="player.skill_long_passing">
+              </div>
+            </div>
+            <span class="text-xs text-gray-500">{{ player.skill_long_passing }}%</span>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600">FK Accuracy</p>
+            <div class="bg-gray-300 rounded-full w-full h-2 mb-2">
+              <div
+                class="h-full rounded-full bg-green-500"
+                [style.width.%]="player.skill_fk_accuracy">
+              </div>
+            </div>
+            <span class="text-xs text-gray-500">{{ player.skill_fk_accuracy }}%</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Defensa</h3>
+        <div class="space-y-4">
+          <div>
+            <p class="text-sm text-gray-600">Standing Tackle</p>
+            <div class="bg-gray-300 rounded-full w-full h-2 mb-2">
+              <div
+                class="h-full rounded-full bg-green-500"
+                [style.width.%]="player.defending_standing_tackle">
+              </div>
+            </div>
+            <span class="text-xs text-gray-500">{{ player.defending_standing_tackle }}%</span>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600">Sliding Tackle</p>
+            <div class="bg-gray-300 rounded-full w-full h-2 mb-2">
+              <div
+                class="h-full rounded-full bg-green-500"
+                [style.width.%]="player.defending_sliding_tackle">
+              </div>
+            </div>
+            <span class="text-xs text-gray-500">{{ player.defending_sliding_tackle }}%</span>
+          </div>
+
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Físico</h3>
+        <div class="space-y-4">
+          <div>
+            <p class="text-sm text-gray-600">Strength</p>
+            <div class="bg-gray-300 rounded-full w-full h-2 mb-2">
+              <div
+                class="h-full rounded-full bg-green-500"
+                [style.width.%]="player.power_strength">
+              </div>
+            </div>
+            <span class="text-xs text-gray-500">{{ player.power_strength }}%</span>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600">Stamina</p>
+            <div class="bg-gray-300 rounded-full w-full h-2 mb-2">
+              <div
+                class="h-full rounded-full bg-green-500"
+                [style.width.%]="player.power_stamina">
+              </div>
+            </div>
+            <span class="text-xs text-gray-500">{{ player.power_stamina }}%</span>
+          </div>
+
+        </div>
+      </div>
+
+ 
+
+    </div>
+  </div>
+
+</section>

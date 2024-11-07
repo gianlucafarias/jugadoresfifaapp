@@ -1,0 +1,16 @@
+<div id="escenario">
+  <div id="contenedor-responsive">
+    <div class="contenedor-campo">
+      <!-- Los puntos de posición de los jugadores irán aquí -->
+      <div *ngFor="let position of positions" 
+           class="position-marker"
+           [ngStyle]="{
+             top: positionMap[position]?.top,
+             left: positionMap[position]?.left
+           }">
+        <div class="marker"></div>
+        <span class="position-label">{{ position }}</span>
+      </div>
+    </div>
+  </div>
+</div>

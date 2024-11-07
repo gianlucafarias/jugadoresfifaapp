@@ -1,0 +1,182 @@
+<section class="flex justify-center flex-col ml-20 mr-20">
+  <div class="flex justify-between items-center mb-5 mt-10">
+    <h4 class="text-3xl font-bold text-black-">Lista de Jugadores</h4>
+  </div>
+
+    <form [formGroup]="filterForm" (ngSubmit)="aplicarFiltros()" class="w-full items-center flex mt-5 bg-gray-100 p-4 rounded-lg gap-2 md:flex-row flex-col lg:flex-row ">
+      <div class="gap-2 mr-4">
+      <label for="nombre" class="pr-4 mb-2 text-sm font-medium text-gray-900">Nombre:</label>
+      <input class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-200 focus:border-primary-200 p-1.5 text-sm" id="nombre" formControlName="nombre" type="text" placeholder="Filtrar por nombre">
+    </div>
+    <div class="gap-2 mr-4">
+      <label for="nacionalidad" class="pr-4 mb-2 text-sm font-medium text-gray-900">Nacionalidad:</label>
+      <input class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-200 focus:border-primary-200 p-1.5 text-sm" id="nacionalidad" formControlName="nacionalidad" type="text" placeholder="Filtrar por nacionalidad">
+    </div>
+    <div class="gap-2 mr-4">
+      <label for="club" class="pr-4 mb-2 text-sm font-medium text-gray-900">Club:</label>
+      <input class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-200 focus:border-primary-200 p-1.5 text-sm" id="club" formControlName="club" type="text" placeholder="Filtrar por club">
+    </div>
+    <div class="gap-2 mr-4">
+      <label for="posicion" class="pr-4 mb-2 text-sm font-medium text-gray-900">Posición:</label>
+      <input class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-200 focus:border-primary-200 p-1.5 text-sm" id="posicion" formControlName="posicion" type="text" placeholder="Filtrar por posición">
+    </div>
+    <div class="gap-2 mr-4">
+      <label for="fifa_version" class="pr-4 mb-2 text-sm font-medium text-gray-900">FIFA Version:</label>
+      <select class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-200 focus:border-primary-200 p-1.5 text-sm" id="fifa_version" formControlName="fifa_version" type="text" placeholder="Filtrar por Version FIFA">
+    
+      <option value="" selected class="text-gray-400 ">Todas</option>
+      <option value="23">FIFA 23</option>
+      <option value="22">FIFA 22</option>
+      <option value="21">FIFA 21</option>
+      <option value="20">FIFA 20</option>
+      <option value="19">FIFA 19</option>
+      <option value="18">FIFA 18</option>
+      <option value="17">FIFA 17</option>
+      <option value="16">FIFA 16</option>
+      </select>
+    </div>
+    <div class="ml-auto md:hidden">
+      <button class="flex items-center px-3 py-2 border rounded" type="button">
+        <svg class="h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+        </svg>
+      </button>
+    </div>
+      <button type="submit" class="text-white bg-gray-600 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Aplicar Filtros</button>
+      <button (click)="jugadoresExport()" class="ml-2 text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+        Exportar
+      </button>
+    </form>
+    
+<div class="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
+    <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-4 font-medium text-gray-900">Jugador</th>
+          <th scope="col" class="px-6 py-4 font-medium text-gray-900">Equipo</th>
+          <th scope="col" class="px-6 py-4 font-medium text-gray-900">Versión FIFA</th>
+          <th scope="col" class="px-6 py-4 font-medium text-gray-900">Posición</th>
+          <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
+
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+        
+        <tr *ngFor="let players of listPlayers" class="hover:bg-gray-50" >
+          <th class="flex gap-3 px-6 py-4 font-normal text-gray-900 cursor-pointer" (click)="navigateToPlayer(players.id, players.fifa_version)">
+            <div class="relative h-10 w-10">
+              
+              <img
+                class="h-full w-full rounded-full object-cover object-center"
+                [src]="sanitizeImageUrl(players.player_face_url)"
+                alt="Jugador"
+              />
+              
+            </div>
+            <div class="text-sm">
+              <div class="font-medium text-gray-700">{{players.long_name}}</div>
+              <div class="text-gray-400">{{players.nationality_name}}</div>
+            </div>
+          </th>
+         
+          <td class="px-6 py-4">{{players.club_name}}</td>
+          <td class="px-6 py-4">
+            <div class="flex gap-2">
+              <img [src]="getFifaIconUrl(players.fifa_version)" alt="FIFA version icon" class="h-16 w-16" />
+            </div>
+          </td>
+          <td class="px-6 py-4">
+            {{players.player_positions}}
+          </td>
+          <td class="px-6 py-4">
+            <div class="flex justify-end gap-4">
+              <a x-data="{ tooltip: 'Delete' }" (click)="openDeleteModal(players.id)" class="cursor-pointer">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="h-6 w-6"
+                  x-tooltip="tooltip"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                  />
+                </svg>
+              </a>
+              <a x-data="{ tooltip: 'Editar' }" (click)="editPlayer(players.id, players.fifa_version)" class="cursor-pointer">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="h-6 w-6"
+                  x-tooltip="tooltip"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+                  />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        
+      </tbody>
+    </table>
+
+   
+  </div>
+
+  <div class="flex justify-center mt-4">
+    <button
+      class="px-4 py-2 mr-2 bg-gray-300 text-gray-800 rounded disabled:opacity-50"
+      [disabled]="page === 1"
+      (click)="prevPage()"
+    >
+      Anterior
+    </button>
+    <span class="px-4 py-2">Página {{page}} de {{totalPages}}</span>
+    <button
+      class="px-4 py-2 ml-2 bg-gray-300 text-gray-800 rounded disabled:opacity-50"
+      [disabled]="page === totalPages"
+      (click)="nextPage()"
+    >
+      Siguiente
+    </button>
+  </div>
+  </section>
+  <div *ngIf="isDeleteModalOpen" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+          <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+            <div class="sm:flex sm:items-start">
+              <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                </svg>
+              </div>
+              <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                <h3 class="text-base font-semibold text-gray-900" id="modal-title">Eliminar Jugador</h3>
+                <div class="mt-2">
+                  <p class="text-sm text-gray-500">¿Estás seguro de que deseas eliminar este jugador? Esta acción no se puede deshacer.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+            <button (click)="deletePlayer()" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Eliminar</button>
+            <button (click)="closeDeleteModal()" type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
