@@ -1,0 +1,19 @@
+<form [formGroup]="playerForm" (ngSubmit)="onSubmit()">
+    <div class="mb-4">
+      <label class="block text-sm font-bold mb-2">Nombre</label>
+      <input class="input-field" formControlName="long_name" type="text" />
+    </div>
+    <div class="mb-4">
+      <label class="block text-sm font-bold mb-2">Equipo</label>
+      <input class="input-field" formControlName="team_name" type="text" />
+    </div>
+    <div class="mb-4">
+      <label class="block text-sm font-bold mb-2">Nacionalidad</label>
+      <input class="input-field" formControlName="nationality_name" type="text" />
+    </div>
+    <!-- Añade el resto de los campos aquí -->
+  
+    <button type="submit" class="btn-primary">
+      {{ playerData ? 'Actualizar' : 'Crear' }} Jugador
+    </button>
+  </form>

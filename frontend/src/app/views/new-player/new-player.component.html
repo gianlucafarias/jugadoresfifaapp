@@ -1,0 +1,123 @@
+<section class="container mx-auto p-8 space-y-8">
+    <div class="text-center mb-8">
+      <h4 class="text-3xl font-bold text-gray-800">Nuevo Jugador</h4>
+    </div>
+  
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <form [formGroup]="newPlayerForm" (submit)="onSubmit()" class="space-y-6">
+        
+        <div>
+          <button type="button" (click)="toggleSection('basicInfo')" class="w-full flex justify-between items-center bg-gray-100 px-4 py-2 rounded-md">
+            <span class="font-semibold text-gray-700">Información Básica</span>
+            <span [ngClass]="{'rotate-180': sections['basicInfo']}" class="transform transition-transform">▼</span>
+          </button>
+          <div *ngIf="sections['basicInfo']" class="mt-4 space-y-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="flex flex-col ">
+              <label for="long_name" class="text-sm font-medium text-gray-700">Nombre del Jugador</label>
+              <input type="text" id="long_name" formControlName="long_name" class="mt-1 p-2 rounded-md border border-gray-300" />
+            </div>
+            <div class="flex flex-col">
+              <label for="club_name" class="text-sm font-medium text-gray-700">Club</label>
+              <input type="text" id="club_name" formControlName="club_name" class="mt-1 p-2 rounded-md border border-gray-300" required />
+            </div>
+            <div class="flex flex-col">
+              <label for="nationality_name" class="text-sm font-medium text-gray-700">Nacionalidad</label>
+              <input type="text" id="nationality_name" formControlName="nationality_name" class="mt-1 p-2 rounded-md border border-gray-300" required />
+            </div>
+            <div class="flex flex-col">
+              <label for="age" class="text-sm font-medium text-gray-700">Edad</label>
+              <input type="number" id="age" formControlName="age" class="mt-1 p-2 rounded-md border border-gray-300" required />
+            </div>
+            <div class="flex flex-col">
+              <label for="fifa_version" class="text-sm font-medium text-gray-700">Versión de FIFA</label>
+              <select id="fifa_version" formControlName="fifa_version" class="mt-1 p-2 rounded-md border border-gray-300" required>
+                <option value="" disabled>Selecciona una versión</option>
+                <option *ngFor="let version of fifaVersions" [value]="version">{{ 'FIFA ' + version }}</option>
+              </select>
+            </div>
+            <div class="flex flex-col">
+              <label for="fifa_update" class="text-sm font-medium text-gray-700">Versión de Actualización</label>
+              <input type="text" id="fifa_update" formControlName="fifa_update" class="mt-1 p-2 rounded-md border border-gray-300" required />
+            </div>
+            <div class="flex flex-col">
+                <label id="preferred_foot" class="text-sm font-medium text-gray-700">Pie Preferido</label>
+                <select id="preferred_foot" formControlName="preferred_foot" class="mt-1 p-2 rounded-md border border-gray-300" required>
+                    <option value="left">Izquierdo</option>
+                    <option value="right">Derecho</option>
+                </select>
+            </div>
+            <div class="flex flex-col">
+                <label id="player_positions" class="text-sm font-medium text-gray-700">Posición</label>
+                <select id="player_positions" formControlName="player_positions" class="mt-1 p-2 rounded-md border border-gray-300" required>
+                    <option value="goalkeeper">Arquero</option>
+                    <option value="defender">Defensor</option>
+                    <option value="midfielder">Mediocampista</option>
+                    <option value="forward">Delantero</option>
+                </select>
+            </div>
+            <div class="flex flex-col">
+                <label id="player_traits" class="text-sm font-medium text-gray-700">Características del Jugador</label>
+                <input type="text" id="player_traits" formControlName="player_traits" class="block w-full p-4 text rounded-md border border-gray-300" />
+            </div>
+            <div class="flex flex-col">
+                <label id="player_face_url" class="text-sm font-medium text-gray-700">URL de la Cara del Jugador</label>
+                <input type="url" id="player_face_url" formControlName="player_face_url" class="block w-full p-4 text rounded-md border border-gray-300" />
+            </div>
+            <div class="flex flex-col">
+               <label id="overall" class="text-sm font-medium text-gray-700">Overall</label>
+               <input type="number" id="overall" formControlName="overall" class="mt-1 p-2 rounded-md border border-gray-300" required />
+            </div>
+            <div class="flex flex-col">
+                <label id="potential" class="text-sm font-medium text-gray-700">Potential</label>
+                <input type="number" id="potential" formControlName="potential" class="mt-1 p-2 rounded-md border border-gray-300" required />
+            </div>
+            <div class="flex flex-col">
+                <label id="value_eur" class="text-sm font-medium text-gray-700">Valor</label>
+                <input type="number" id="value_eur" formControlName="value_eur" class="mt-1 p-2 rounded-md border border-gray-300" required />
+            </div>
+            <div class="flex flex-col">
+                <label id="wage_eur" class="text-sm font-medium text-gray-700">Sueldo</label>
+                <input type="number" id="wage_eur" formControlName="wage_eur" class="mt-1 p-2 rounded-md border border-gray-300" required />
+            </div>
+          </div>
+        </div>
+  
+        <div *ngFor="let category of categories | keyvalue">
+            <button 
+              type="button" 
+              (click)="toggleSection(category.key)" 
+              class="w-full flex justify-between items-center bg-gray-200 px-4 py-2 rounded-md mt-4"
+            >
+              <span class="font-semibold text-gray-700">{{ formatLabel(category.key) }}</span>
+              <span 
+                [ngClass]="{'rotate-180': sections[category.key]}" 
+                class="transform transition-transform"
+              >
+                ▼
+              </span>
+            </button>
+          
+            <div *ngIf="sections[category.key]" class="mt-4 space-y-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div *ngFor="let stat of category.value" class="flex flex-col">
+                <label [for]="stat" class="text-sm font-medium text-gray-700">{{ formatLabel(stat) }}</label>
+                <input
+                  type="range"
+                  [id]="stat"
+                  [formControlName]="stat"
+                  min="0"
+                  max="100"
+                  class="mt-1"
+                />
+                <span class="text-xs text-gray-500">{{ newPlayerForm.get(stat)?.value || 0 }}%</span>
+              </div>
+            </div>
+          </div>
+        <div class="text-center mt-6">
+          <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            Cargar Jugador
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+  
