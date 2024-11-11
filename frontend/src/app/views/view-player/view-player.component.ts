@@ -4,13 +4,12 @@ import { PlayerService } from '../../services/player.service';
 import { Player } from '../../interfaces/player';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { FieldPositionComponent } from '../../components/field-position/field-position.component';
 import { Chart } from 'chart.js/auto';
 import { PositionKey } from '../../interfaces/positionKeys';
 @Component({
   selector: 'app-view-player',
   standalone: true,
-  imports: [CommonModule, FieldPositionComponent],
+  imports: [CommonModule],
   templateUrl: './view-player.component.html',
   styleUrl: './view-player.component.css'
 })

@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { PlayerService } from '../../services/player.service';
 import { Router } from '@angular/router';
-import { Player } from '../../interfaces/player';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, NgIf } from '@angular/common';
-import { NgClass } from '@angular/common';
+
 @Component({
   selector: 'app-new-player',
   standalone: true,
@@ -140,6 +139,7 @@ export class NewPlayerComponent {
         this.router.navigate([`/players/${fifa_version}/${playerId}`]);
       },
       (error) => {
+        alert('Error al crear el jugador');
         console.error('Error al crear el jugador:', error);
       }
     );
